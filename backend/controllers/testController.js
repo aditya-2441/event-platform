@@ -164,7 +164,7 @@ const submitAnswers = async (req, res) => {
       if (!round) throw { status: 404, message: "Round not found" };
 
       for (const ans of answers) {
-        const { questionId, user_answer } = ans;
+        const { questionId, user_answer, time_taken } = ans;
         if (!questionId) throw { status: 400, message: "Each answer must include a valid questionId" };
 
         const question = await Question.findById(questionId).session(session);
@@ -186,6 +186,10 @@ const submitAnswers = async (req, res) => {
           existingSubmission.user_answer = user_answer;
           existingSubmission.submitted_at = new Date();
 
+          if (time_taken !== undefined) {
+            existingSubmission.time_taken = time_taken;
+          }
+
           // Apply auto-grade result only when available
           if (Object.keys(gradingResult).length > 0) {
             existingSubmission.is_correct = gradingResult.is_correct;
@@ -202,6 +206,7 @@ const submitAnswers = async (req, res) => {
             question_id: questionId,
             user_answer,
             submitted_at: new Date(),
+            time_taken: time_taken !== undefined ? time_taken : 0,
             is_correct: Object.keys(gradingResult).length > 0 ? gradingResult.is_correct : null,
             auto_graded: Object.keys(gradingResult).length > 0
           };

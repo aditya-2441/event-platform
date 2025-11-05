@@ -27,10 +27,15 @@ const submissionSchema = new mongoose.Schema({
   auto_graded:{
     type: Boolean,
     default: false
-  }
+  },
+  // ADDED: time_taken field
+    time_taken: {
+      type: Number, // Storing time in seconds or milliseconds
+      default: 0,
+    },
 
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
 const Submission = mongoose.model('Submission', submissionSchema);
