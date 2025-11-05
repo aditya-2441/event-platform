@@ -30,7 +30,7 @@ const submissionSchema = new mongoose.Schema({
   },
   // ADDED: time_taken field
     time_taken: {
-      type: Number, // Storing time in seconds or milliseconds
+      type: Number, // Storing time in minutes
       default: 0,
     },
 

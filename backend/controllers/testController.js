@@ -147,7 +147,7 @@ const submitAnswers = async (req, res) => {
   const session = await mongoose.startSession();
 
   try {
-    const { userId, roundId, answers } = req.body; //answers: [{ questionId, user_answer }, ...]
+    const { userId, roundId, answers, time_taken } = req.body; //answers: [{ questionId, user_answer }, ...]
 
     if (!userId || !roundId || !Array.isArray(answers)) {
       return res.status(400).json({
@@ -164,7 +164,7 @@ const submitAnswers = async (req, res) => {
       if (!round) throw { status: 404, message: "Round not found" };
 
       for (const ans of answers) {
-        const { questionId, user_answer, time_taken } = ans;
+        const { questionId, user_answer, } = ans;
         if (!questionId) throw { status: 400, message: "Each answer must include a valid questionId" };
 
         const question = await Question.findById(questionId).session(session);
